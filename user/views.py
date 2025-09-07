@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.views.decorators.cache import cache_control
 
 
+def index(request):
+    return render(request, 'index.html')
 
 # Registration
 @cache_control(no_cache = True, must_revalidate = True, no_store = True)
