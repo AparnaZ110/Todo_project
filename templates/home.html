@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 60% 20%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 30% 80%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+            z-index: -2;
+            animation: backgroundMove 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundMove {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Floating elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-shape {
+            position: absolute;
+            opacity: 0.06;
+            animation: float 12s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(1) {
+            top: 10%;
+            left: 15%;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #0508c4, #0380b5);
+            border-radius: 50%;
+            animation-delay: 0s;
+        }
+
+        .floating-shape:nth-child(2) {
+            top: 60%;
+            right: 20%;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            transform: rotate(45deg);
+            animation-delay: 3s;
+        }
+
+        .floating-shape:nth-child(3) {
+            top: 30%;
+            right: 40%;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 30%;
+            animation-delay: 6s;
+        }
+
+        .floating-shape:nth-child(4) {
+            bottom: 20%;
+            left: 25%;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-radius: 20px;
+            animation-delay: 9s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.06;
+            }
+            33% {
+                transform: translateY(-30px) rotate(120deg);
+                opacity: 0.1;
+            }
+            66% {
+                transform: translateY(20px) rotate(240deg);
+                opacity: 0.08;
+            }
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: rgb(0, 13, 0) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 1px 20px rgba(0, 0, 0, 0.05);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem !important;
+            font-weight: 700 !important;
+            background: linear-gradient(135deg, #0508c4, #0380b5) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            position: relative;
+        }
+
+        .navbar-brand::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(135deg, #0508c4, #0380b5);
+            border-radius: 1px;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover::after {
+            transform: scaleX(1);
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+            border: none !important;
+            color: white !important;
+            font-weight: 600 !important;
+            padding: 0.5rem 1.5rem !important;
+            border-radius: 12px !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logout-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .logout-btn:hover::before {
+            left: 100%;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4) !important;
+        }
+
+        /* Main Container */
+        .main-container {
+            min-height: calc(100vh - 100px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        /* Welcome Card */
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 4rem 3rem;
+            text-align: center;
+            box-shadow: 
+                0 0 0 1px rgba(0, 0, 0, 0.05),
+                0 1px 2px rgba(0, 0, 0, 0.1),
+                0 25px 50px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .welcome-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                0 0 0 1px rgba(0, 0, 0, 0.05),
+                0 4px 6px rgba(0, 0, 0, 0.1),
+                0 40px 80px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Decorative elements in card */
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(99, 102, 241, 0.03) 50%, transparent 70%);
+            animation: cardShine 4s ease-in-out infinite;
+        }
+
+        @keyframes cardShine {
+            0%, 100% { transform: rotate(0deg); opacity: 0; }
+            50% { transform: rotate(180deg); opacity: 1; }
+        }
+
+        /* Avatar/Icon */
+        .welcome-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #0508c4 0%, #0380b5 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .welcome-avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            animation: avatarShine 3s ease-in-out infinite;
+        }
+
+        @keyframes avatarShine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .welcome-avatar i {
+            font-size: 3rem;
+            color: white;
+            z-index: 1;
+        }
+
+        /* Typography */
+        .welcome-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.25rem;
+            color: #6b7280;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            padding: 0.875rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg,#0508c4 0%, #0380b5 100%);
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary-custom {
+            background: rgba(255, 255, 255, 0.8);
+            color: #374151;
+            border: 2px solid #e5e7eb;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            text-decoration: none;
+        }
+
+        .btn-primary-custom:hover {
+            box-shadow: 0 12px 24px rgba(99, 102, 241, 0.4);
+            color: white;
+        }
+
+        .btn-secondary-custom:hover {
+            background: white;
+            border-color: #6366f1;
+            color: #6366f1;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Stats/Info Cards */
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .info-card i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-card h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-card p {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .info-card:nth-child(1) i { color: #6366f1; }
+        .info-card:nth-child(2) i { color: #10b981; }
+        .info-card:nth-child(3) i { color: #f59e0b; }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .welcome-card {
+                padding: 2.5rem 2rem;
+                margin: 1rem;
+            }
+
+            .welcome-title {
+                font-size: 2.5rem;
+            }
+
+            .welcome-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .floating-shape {
+                display: none;
+            }
+        }
+
+        /* Loading animation for interactive elements */
+        .loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-rocket me-2"></i>{{ name|default:"Dashboard" }}
+            </a>
+            <form action="{% url 'log_out' %}" class="d-flex">
+                <button type="submit" class="btn logout-btn">
+                    <i class="fas fa-sign-out-alt me-2"></i>LOGOUT
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="welcome-card">
+            <div class="welcome-avatar">
+                <i class="fas fa-user-astronaut"></i>
+            </div>
+            
+            <h1 class="welcome-title">
+                Welcome, {{ name|default:"User" }}!
+            </h1>
+            
+            <p class="welcome-subtitle">
+                We're thrilled to have you here. Your journey begins now – explore endless possibilities and make the most of your experience with us.
+            </p>
+
+            <div class="action-buttons">
+                <a href="#" class="action-btn btn-primary-custom" onclick="showComingSoon('Dashboard')">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Go to Dashboard
+                </a>
+                <a href="#" class="action-btn btn-secondary-custom" onclick="showComingSoon('Profile')">
+                    <i class="fas fa-user-cog"></i>
+                    Edit Profile
+                </a>
+            </div>
+
+            
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add loading animation to logout button
+        document.querySelector('form').addEventListener('submit', function() {
+            const btn = this.querySelector('.logout-btn');
+            btn.classList.add('loading');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Logging out...';
+        });
+
+        // Placeholder function for coming soon features
+        function showComingSoon(feature) {
+            const btn = event.target.closest('.action-btn');
+            const originalContent = btn.innerHTML;
+            
+            btn.classList.add('loading');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Loading...';
+            
+            setTimeout(() => {
+                btn.classList.remove('loading');
+                btn.innerHTML = originalContent;
+                alert(`${feature} feature is coming soon! 🚀`);
+            }, 1500);
+        }
+
+        // Add some interactivity to floating elements
+        document.querySelectorAll('.floating-shape').forEach((shape, index) => {
+            shape.addEventListener('click', function() {
+                this.style.animation = 'none';
+                setTimeout(() => {
+                    this.style.animation = `float 12s ease-in-out infinite`;
+                    this.style.animationDelay = `${index * 3}s`;
+                }, 100);
+            });
+        });
+
+        // Welcome animation on load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.querySelector('.welcome-card').style.transform = 'translateY(-4px)';
+            }, 1000);
+        });
+
+        // Dynamic greeting based on time
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            const welcomeTitle = document.querySelector('.welcome-title');
+            const name = "{{ name|default:'User' }}";
+            
+            let greeting = 'Welcome';
+            if (hour < 12) greeting = 'Good Morning';
+            else if (hour < 17) greeting = 'Good Afternoon';
+            else greeting = 'Good Evening';
+            
+            welcomeTitle.textContent = `${greeting}, ${name}!`;
+        }
+
+        updateGreeting();
+    </script>
+</body>
+</html>
